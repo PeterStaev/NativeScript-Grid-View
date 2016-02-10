@@ -1,6 +1,6 @@
 {
   "nativescript": {
-		"id": "org.nativescript.gridviewsample",
+		"id": "org.nativescript.gridview",
 		"tns-ios": {
 			"version": "1.5.1"
 		},
