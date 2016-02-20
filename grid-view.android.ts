@@ -21,7 +21,6 @@ import utils = require("utils/utils");
 import layout = require("ui/layouts/layout");
 import stackLayout = require("ui/layouts/stack-layout");
 import view = require("ui/core/view");
-import style = require("ui/styling");
 import stylingStyle = require("ui/styling/style");
 
 const ITEMLOADING = common.GridView.itemLoadingEvent;
@@ -282,8 +281,8 @@ function getNativePaddingTopValue(gridView: GridView): any
 {
     return gridView.android.getPaddingTop();
 }
-let paddingTopChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingTop, resetPaddingTop, getNativePaddingTopValue);
-style.stylers.registerHandler(stylingStyle.paddingTopProperty, paddingTopChangedHandler, "GridView");
+let paddingTopChangedHandler = new stylingStyle.StylePropertyChangedHandler(setPaddingTop, resetPaddingTop, getNativePaddingTopValue);
+stylingStyle.registerHandler(stylingStyle.paddingTopProperty, paddingTopChangedHandler, "GridView");
 //#endregion
 
 //#region Padding Right Property
@@ -299,8 +298,8 @@ function getNativePaddingRightValue(gridView: GridView): any
 {
     return gridView.android.getPaddingRight();
 }
-let paddingRightChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingRight, resetPaddingRight, getNativePaddingRightValue);
-style.stylers.registerHandler(stylingStyle.paddingRightProperty, paddingRightChangedHandler, "GridView");
+let paddingRightChangedHandler = new stylingStyle.StylePropertyChangedHandler(setPaddingRight, resetPaddingRight, getNativePaddingRightValue);
+stylingStyle.registerHandler(stylingStyle.paddingRightProperty, paddingRightChangedHandler, "GridView");
 //#endregion
 
 //#region Padding Bottom Property
@@ -316,8 +315,8 @@ function getNativePaddingBottomValue(gridView: GridView): any
 {
     return gridView.android.getPaddingBottom();
 }
-let paddingBottomChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingBottom, resetPaddingBottom, getNativePaddingBottomValue);
-style.stylers.registerHandler(stylingStyle.paddingBottomProperty, paddingBottomChangedHandler, "GridView");
+let paddingBottomChangedHandler = new stylingStyle.StylePropertyChangedHandler(setPaddingBottom, resetPaddingBottom, getNativePaddingBottomValue);
+stylingStyle.registerHandler(stylingStyle.paddingBottomProperty, paddingBottomChangedHandler, "GridView");
 //#endregion
 
 //#region Padding Left Property
@@ -333,8 +332,8 @@ function getNativePaddingLeftValue(gridView: GridView): any
 {
     return gridView.android.getPaddingLeft();
 }
-let paddingLeftChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingLeft, resetPaddingLeft, getNativePaddingLeftValue);
-style.stylers.registerHandler(stylingStyle.paddingLeftProperty, paddingLeftChangedHandler, "GridView");
+let paddingLeftChangedHandler = new stylingStyle.StylePropertyChangedHandler(setPaddingLeft, resetPaddingLeft, getNativePaddingLeftValue);
+stylingStyle.registerHandler(stylingStyle.paddingLeftProperty, paddingLeftChangedHandler, "GridView");
 //#endregion
 
 //#endregion
