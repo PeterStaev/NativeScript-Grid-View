@@ -47,7 +47,7 @@ obj
 .vs
 .tscache
 *.user
-*.js
+.js
 *.map
 !gruntfile.js
 node_modules
