@@ -151,7 +151,8 @@ export class GridView extends common.GridView
 
         this._layout = new UICollectionViewFlowLayout();
         this._ios = UICollectionView.alloc().initWithFrameCollectionViewLayout(CGRectMake(0, 0, 0, 0), this._layout);
-        this._ios.backgroundColor = UIColor.clearColor();
+
+        this._ios.backgroundColor = utils.ios.getter(UIColor, UIColor.clearColor);
         this._ios.registerClassForCellWithReuseIdentifier(GridViewCell.class(), CELLIDENTIFIER);
         this._ios.autoresizesSubviews = false;
         this._ios.autoresizingMask = UIViewAutoresizing.UIViewAutoresizingNone;

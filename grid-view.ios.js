@@ -14,11 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************** */
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
 var common = require("./grid-view-common");
 var utils = require("utils/utils");
 var view = require("ui/core/view");
@@ -31,7 +37,7 @@ global.moduleMerge(common, exports);
 var GridViewCell = (function (_super) {
     __extends(GridViewCell, _super);
     function GridViewCell() {
-        return _super.apply(this, arguments) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     GridViewCell["new"] = function () {
         return _super["new"].call(this);
@@ -54,7 +60,7 @@ function notifyForItemAtIndex(gridView, cell, eventName, indexPath) {
 var GridViewDataSource = (function (_super) {
     __extends(GridViewDataSource, _super);
     function GridViewDataSource() {
-        return _super.apply(this, arguments) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     GridViewDataSource.initWithOwner = function (owner) {
         var dataSource = GridViewDataSource["new"]();
@@ -82,7 +88,7 @@ GridViewDataSource.ObjCProtocols = [UICollectionViewDataSource];
 var UICollectionViewDelegateImpl = (function (_super) {
     __extends(UICollectionViewDelegateImpl, _super);
     function UICollectionViewDelegateImpl() {
-        return _super.apply(this, arguments) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     UICollectionViewDelegateImpl.initWithOwner = function (owner) {
         var delegate = UICollectionViewDelegateImpl["new"]();
@@ -119,7 +125,7 @@ var GridView = (function (_super) {
         _this._preparingCell = false;
         _this._layout = new UICollectionViewFlowLayout();
         _this._ios = UICollectionView.alloc().initWithFrameCollectionViewLayout(CGRectMake(0, 0, 0, 0), _this._layout);
-        _this._ios.backgroundColor = UIColor.clearColor();
+        _this._ios.backgroundColor = utils.ios.getter(UIColor, UIColor.clearColor);
         _this._ios.registerClassForCellWithReuseIdentifier(GridViewCell["class"](), CELLIDENTIFIER);
         _this._ios.autoresizesSubviews = false;
         _this._ios.autoresizingMask = UIViewAutoresizing.UIViewAutoresizingNone;
@@ -259,4 +265,4 @@ var GridViewStyler = (function () {
 }());
 exports.GridViewStyler = GridViewStyler;
 GridViewStyler.registerHandlers();
-//#endregion 
+//#endregion
