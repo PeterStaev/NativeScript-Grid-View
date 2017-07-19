@@ -4,6 +4,7 @@
             "**/*.d.ts",
             "!references.d.ts",
             "!demo/**/*.*",
+            "!demo-ng/**/*.*",
             "!node_modules/**/*.*",
             "!bin/**/*.*"
         ],
@@ -23,7 +24,7 @@
             },
             platforms: {
                 files: [{ expand: true, src: ["platforms/**"], dest: localConfig.outDir }]
-            },            
+            },
             packageConfig: {
                 src: "package.json",
                 dest: localConfig.outDir,
@@ -47,13 +48,13 @@
         },
         exec: {
             tsCompile: {
-                cmd: "node ./node_modules/typescript/bin/tsc --project tsconfig.json --outDir " + localConfig.outDir
+                cmd: "node ./node_modules/.bin/ngc --project tsconfig.json --outDir " + localConfig.outDir
             },
             tslint: {
                 cmd: "node ./node_modules/tslint/bin/tslint --project tsconfig.json --type-check"
             },
             npm_publish: {
-                cmd: "npm publish", 
+                cmd: "npm publish",
                 cwd: localConfig.outDir
             }
         }

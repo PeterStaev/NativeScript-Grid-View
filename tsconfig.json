@@ -9,21 +9,38 @@
         "noUnusedLocals": true,
         "target": "es5",
         "module": "commonjs",
+        "noLib": false,
         "outDir": "bin/dist",
-        "lib": ["es6", "dom"],
+        "lib": [
+            "es6",
+            "dom",
+            "es2015.iterable"
+        ],
         "rootDir": ".",
         "baseUrl": ".",
         "paths": {
             "*": [
-            "./node_modules/tns-core-modules/*",
-            "./node_modules/*"
+                "./node_modules/tns-core-modules/*",
+                "./node_modules/*"
+            ],
+            "@angular/core": [
+                "../node_modules/@angular/core"
+            ],
+            "rxjs/*": [
+                "../node_modules/rxjs/*"
             ]
-        }
+        },
+        "skipLibCheck": true
     },
     "exclude": [
-        "node_modules", 
-        "demo", 
-        "demo-ng", 
+        "node_modules",
+        "demo",
+        "demo-ng",
         "bin"
-    ]
+    ],
+    "angularCompilerOptions": {
+        "genDir": "bin/dist",
+        "skipTemplateCodegen": true
+    },
+    "compileOnSave": false
 }
