@@ -28,6 +28,7 @@ import {
     ElementRef,
     EmbeddedViewRef,
     EventEmitter,
+    Inject,
     Input,
     IterableDiffer,
     IterableDiffers,
@@ -48,7 +49,7 @@ import { LayoutBase } from "tns-core-modules/ui/layouts/layout-base";
 import {
   GridItemEventData,
   GridView,
-} from "./grid-view";
+} from "../grid-view";
 
 import { isListLikeIterable } from "nativescript-angular/collection-facade";
 import {
@@ -130,9 +131,9 @@ export class GridViewComponent implements DoCheck, OnDestroy, AfterContentInit, 
     private _differ: IterableDiffer<KeyedTemplate>;
     private itemTemplate: TemplateRef<GridItemContext>;
 
-    constructor(_elementRef: ElementRef,
-                private _iterableDiffers: IterableDiffers,
-                private _cdr: ChangeDetectorRef) {
+    constructor(@Inject(ElementRef) _elementRef: ElementRef,
+                @Inject(IterableDiffers) private _iterableDiffers: IterableDiffers,
+                @Inject(ChangeDetectorRef) private _cdr: ChangeDetectorRef) {
         this.gridView = _elementRef.nativeElement;
 
         this.gridView.on(GridView.itemLoadingEvent, this.onItemLoading, this);

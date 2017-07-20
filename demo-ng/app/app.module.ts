@@ -13,7 +13,7 @@ import { ItemDetailComponent } from "./item/item-detail.component";
 // Uncomment and add to NgModule imports  if you need to use the HTTP wrapper
 // import { NativeScriptHttpModule } from "nativescript-angular/http";
 
-import { TNSGridViewModule } from 'nativescript-grid-view/grid-view.module';
+import { GridViewModule } from 'nativescript-grid-view/angular/index';
 import * as trace from 'tns-core-modules/trace';
 trace.setCategories('ns-grid-view');
 trace.enable();
@@ -25,7 +25,7 @@ trace.enable();
     imports: [
         NativeScriptModule,
         AppRoutingModule,
-        TNSGridViewModule,
+        GridViewModule,
     ],
     declarations: [
         AppComponent,

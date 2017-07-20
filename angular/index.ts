@@ -3,14 +3,10 @@ import {
   NO_ERRORS_SCHEMA,
   NgModule,
 } from "@angular/core";
-import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 
-import { GridViewComponent } from "./ngx-grid-view-comp";
+import { GridViewComponent } from "./grid-view-comp";
 
 @NgModule({
-  imports: [
-    NativeScriptModule,
-  ],
   declarations: [
     GridViewComponent,
   ],
@@ -21,5 +17,5 @@ import { GridViewComponent } from "./ngx-grid-view-comp";
     NO_ERRORS_SCHEMA,
   ],
 })
-export class TNSGridViewModule {
+export class GridViewModule {
 }
