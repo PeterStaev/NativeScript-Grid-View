@@ -39,6 +39,7 @@ import {
     ViewContainerRef,
 } from "@angular/core";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
+import { isAndroid } from "tns-core-modules/platform";
 import { profile } from "tns-core-modules/profiling";
 import { messageType, write } from "tns-core-modules/trace";
 import {
@@ -138,7 +139,7 @@ export class GridViewComponent implements DoCheck, OnDestroy, AfterContentInit, 
 
         this.gridView.on(GridView.itemLoadingEvent, this.onItemLoading, this);
 
-        if (this.gridView.android) {
+        if (isAndroid) {
           // This is workaround to an android issue, there navigating back to a page with the gridview resulted in incorrect sizing of items;
           this.gridView.on(View.loadedEvent, () => this.refresh());
         }
