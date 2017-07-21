@@ -48,7 +48,7 @@ Template:
 
 In your app-module:
 ```typescript
-import { TNSGridViewModule } from 'nativescript-grid-view/grid-view.module';
+import { GridViewModule } from 'nativescript-grid-view/angular';
 
 @NgModule({
     bootstrap: [
@@ -56,7 +56,7 @@ import { TNSGridViewModule } from 'nativescript-grid-view/grid-view.module';
     ],
     imports: [
         ...
-        TNSGridViewModule,
+        GridViewModule,
     ],
     declarations: [
         ...
