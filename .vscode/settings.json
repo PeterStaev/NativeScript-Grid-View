@@ -3,7 +3,9 @@
     "files.exclude": {
         "**/.git": true,
         "**/.DS_Store": true, 
-        "sample": true, 
+        "demo": true, 
         "bin/**": true
     }
+,
+"typescript.tsdk": "./node_modules/typescript/lib"
 }

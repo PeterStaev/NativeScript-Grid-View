@@ -1,0 +1,9 @@
+.default {
+    background-color: red;
+    padding: 10;
+}
+
+.changed {
+    background-color: yellow;
+    padding: 0 15;
+}
