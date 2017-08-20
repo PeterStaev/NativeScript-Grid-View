@@ -43,8 +43,11 @@ export class GridView extends GridViewBase {
         recyclerView.setAdapter(adapter);
         (recyclerView as any).adapter = adapter;
 
+        const orientation = this._getLayoutManagarOrientation();
+
         const layoutManager = new android.support.v7.widget.GridLayoutManager(this._context, 1);
         recyclerView.setLayoutManager(layoutManager);
+        layoutManager.setOrientation(orientation);
         (recyclerView as any).layoutManager = layoutManager;
 
         const scrollListener = new GridViewScrollListener(new WeakRef(this));
@@ -137,9 +140,21 @@ export class GridView extends GridViewBase {
         }
 
         const layoutManager = this.nativeView.getLayoutManager() as android.support.v7.widget.GridLayoutManager;
-        const spanCount = Math.max(Math.floor(this._innerWidth / this._effectiveColWidth), 1) || 1;
+        let spanCount: number;
+
+        if (this.orientation === "horizontal") {
+          spanCount = Math.max(Math.floor(this._innerHeight / this._effectiveRowHeight), 1) || 1;
+        } else {
+          spanCount = Math.max(Math.floor(this._innerWidth / this._effectiveColWidth), 1) || 1;
+        }
+
+        const newOrientation = this._getLayoutManagarOrientation();
+        if (layoutManager.getOrientation() !== newOrientation) {
+            layoutManager.setOrientation(newOrientation);
+        }
 
         layoutManager.setSpanCount(spanCount);
+
         this.nativeView.getAdapter().notifyDataSetChanged();
     }
 
@@ -162,6 +177,15 @@ export class GridView extends GridViewBase {
         // tslint:disable-next-line:prefer-object-spread
         const newValue = Object.assign(padding, newPadding);
         nativeView.setPadding(newValue.left, newValue.top, newValue.right, newValue.bottom);
+    }
+
+    private _getLayoutManagarOrientation() {
+        let orientation = android.support.v7.widget.LinearLayoutManager.VERTICAL;
+        if (this.orientation === "horizontal") {
+            orientation = android.support.v7.widget.LinearLayoutManager.HORIZONTAL;
+        }
+
+        return orientation;
     }
 }
 
@@ -258,8 +282,12 @@ class GridViewAdapter extends android.support.v7.widget.RecyclerView.Adapter {
             index,
             view: vh.view
         });
-        
-        vh.view.height = utils.layout.toDeviceIndependentPixels(owner._effectiveRowHeight);
+      
+        if (owner.orientation === 'horizontal') {
+            vh.view.width = utils.layout.toDeviceIndependentPixels(owner._effectiveColWidth);
+        } else {
+            vh.view.height = utils.layout.toDeviceIndependentPixels(owner._effectiveRowHeight);
+        }
         
         owner._prepareItem(vh.view, index);
     }    

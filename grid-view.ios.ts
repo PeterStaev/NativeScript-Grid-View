@@ -20,6 +20,7 @@ import * as utils from "utils/utils";
 
 import {
     GridViewBase,
+    GridViewOrientation,
     paddingBottomProperty,
     paddingLeftProperty,
     paddingRightProperty,
@@ -38,6 +39,17 @@ export class GridView extends GridViewBase {
     private _delegate: UICollectionViewDelegateImpl;
     private _preparingCell: boolean = false;
     private _map: Map<GridViewCell, View>;
+
+    private _orientation: GridViewOrientation = "vertical";
+    public set orientation(orientation: GridViewOrientation) {
+      if (orientation === "horizontal") {
+          this._layout.scrollDirection = UICollectionViewScrollDirection.Horizontal;
+      } else {
+          this._layout.scrollDirection = UICollectionViewScrollDirection.Vertical;
+      }
+
+      this._orientation = orientation;
+    }
 
     constructor() {
         super();

@@ -36,6 +36,7 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
     public static itemTapEvent = "itemTap";
     public static loadMoreItemsEvent = "loadMoreItems";
 
+    public orientation: GridViewOrientation;
     public itemTemplate: string | Template;
     public items: any[] | ItemsSource;
     public isItemsSourceIn: boolean;
@@ -53,10 +54,10 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
     public onLayout(left: number, top: number, right: number, bottom: number) {
         super.onLayout(left, top, right, bottom);
 
-        this._innerWidth = right - this.effectivePaddingLeft - this.effectivePaddingRight;
+        this._innerWidth = right - left - this.effectivePaddingLeft - this.effectivePaddingRight;
         this._effectiveColWidth = PercentLength.toDevicePixels(this.colWidth, autoEffectiveColWidth, this._innerWidth); // We cannot use 0 for auto as it throws for android. 
 
-        this._innerHeight = bottom - this.effectivePaddingTop - this.effectivePaddingBottom;
+        this._innerHeight = bottom - top - this.effectivePaddingTop - this.effectivePaddingBottom;
         this._effectiveRowHeight = PercentLength.toDevicePixels(this.rowHeight, autoEffectiveRowHeight, this._innerHeight);
     }
     
@@ -142,3 +143,25 @@ export const colWidthProperty = new CoercibleProperty<GridViewBase, PercentLengt
     }
 });
 colWidthProperty.register(GridViewBase);
+
+export type GridViewOrientation = "vertical" | "horizontal";
+const defaultOrientation: GridViewOrientation = "vertical";
+export const orientationProperty = new CoercibleProperty<GridViewBase, GridViewOrientation>({
+    name: "orientation",
+    defaultValue: defaultOrientation,
+    coerceValue(target: GridViewBase, value: GridViewOrientation) {
+        if (!target || !target.nativeView) {
+            return defaultOrientation;
+        }
+
+        if (value === "horizontal") {
+            return "horizontal";
+        }
+
+        return "vertical";
+    },
+    valueChanged(target: GridViewBase, oldValue: GridViewOrientation, newValue: GridViewOrientation) {
+        target.orientation = newValue;
+        target.refresh();
+    },
+});
