@@ -283,7 +283,7 @@ class GridViewAdapter extends android.support.v7.widget.RecyclerView.Adapter {
             view: vh.view
         });
       
-        if (owner.orientation === 'horizontal') {
+        if (owner.orientation === "horizontal") {
             vh.view.width = utils.layout.toDeviceIndependentPixels(owner._effectiveColWidth);
         } else {
             vh.view.height = utils.layout.toDeviceIndependentPixels(owner._effectiveRowHeight);
