@@ -20,14 +20,14 @@ import * as utils from "utils/utils";
 
 import {
     GridViewBase,
-    GridViewOrientation,
+    orientationProperty,
     paddingBottomProperty,
     paddingLeftProperty,
     paddingRightProperty,
-    paddingTopProperty
+    paddingTopProperty,
 } from "./grid-view-common";
 
-import { GridItemEventData } from ".";
+import { GridItemEventData, Orientation } from ".";
 
 export * from "./grid-view-common";
 
@@ -39,17 +39,6 @@ export class GridView extends GridViewBase {
     private _delegate: UICollectionViewDelegateImpl;
     private _preparingCell: boolean = false;
     private _map: Map<GridViewCell, View>;
-
-    private _orientation: GridViewOrientation = "vertical";
-    public set orientation(orientation: GridViewOrientation) {
-      if (orientation === "horizontal") {
-          this._layout.scrollDirection = UICollectionViewScrollDirection.Horizontal;
-      } else {
-          this._layout.scrollDirection = UICollectionViewScrollDirection.Vertical;
-      }
-
-      this._orientation = orientation;
-    }
 
     constructor() {
         super();
@@ -121,6 +110,21 @@ export class GridView extends GridViewBase {
     }
     public [paddingLeftProperty.setNative](value: Length) {
         this._setPadding({ left: utils.layout.toDeviceIndependentPixels(this.effectivePaddingLeft) });
+    }
+
+    public [orientationProperty.getDefault](): Orientation {
+        if (this._layout.scrollDirection === UICollectionViewScrollDirection.Horizontal) {
+            return "horizontal";
+        }
+
+        return "vertical";
+    }
+    public [orientationProperty.setNative](value: Orientation) {
+        if (value === "horizontal") {
+            this._layout.scrollDirection = UICollectionViewScrollDirection.Horizontal;
+        } else {
+            this._layout.scrollDirection = UICollectionViewScrollDirection.Vertical;
+        }
     }
 
     public eachChildView(callback: (child: View) => boolean): void {
