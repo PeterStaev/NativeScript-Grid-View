@@ -35,6 +35,12 @@ export class GridView extends View {
     public android: any; /* android.support.v7.widget.RecyclerView */
 
     public refresh();
+
+    /**
+     * Only available on ios. Android coming soon.
+     * Raised when a scroll event occurs.
+     */
+    on(event: "scroll", callback: (args: ScrollEventData) => void);
 }
 
 export interface GridItemEventData extends EventData {
@@ -42,4 +48,9 @@ export interface GridItemEventData extends EventData {
     object: GridView;
     index: number;
     view: View;
+}
+
+export interface ScrollEventData extends EventData {
+    scrollX: number;
+    scrollY: number;
 }
