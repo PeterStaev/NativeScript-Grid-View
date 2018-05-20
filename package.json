@@ -1,13 +1,13 @@
 {
   "name": "nativescript-grid-view",
-  "version": "3.4.0",
+  "version": "4.0.0",
   "description": "A NativeScript GridView widget.",
   "main": "grid-view",
   "typings": "grid-view.d.ts",
   "nativescript": {
     "platforms": {
-      "ios": "3.0.0",
-      "android": "3.0.0"
+      "ios": "4.0.0",
+      "android": "4.0.0"
     },
     "plugin": {
       "nan": "true",
@@ -37,33 +37,34 @@
     "tangra"
   ],
   "author": "Peter Staev <peter@tangrasoft.com>",
-	"contributors": [
-		"Morten Sjøgren (https://github.com/m-abs)"
-	],
+  "contributors": [
+    "Morten Sjøgren (https://github.com/m-abs)"
+  ],
   "license": "Apache-2.0",
   "peerDependencies": {
-    "tns-core-modules": "^3.4.0"
+    "tns-core-modules": "^4"
   },
   "devDependencies": {
-    "@angular/common": "~5.1.0",
-    "@angular/compiler": "~5.1.0",
-    "@angular/compiler-cli": "~5.1.0",
-    "@angular/core": "~5.1.0",
-    "@angular/forms": "~5.1.0",
-    "@angular/http": "~5.1.0",
-    "@angular/platform-browser": "~5.1.0",
-    "@angular/router": "~5.1.0",
+    "@angular/common": "^5.2.11",
+    "@angular/compiler": "^5.2.11",
+    "@angular/compiler-cli": "^5.2.11",
+    "@angular/core": "^5.2.11",
+    "@angular/forms": "^5.2.11",
+    "@angular/http": "^5.2.11",
+    "@angular/platform-browser": "^5.2.11",
+    "@angular/platform-browser-dynamic": "^5.2.11",
+    "@angular/router": "^5.2.11",
     "grunt": "1.0.1",
     "grunt-contrib-clean": "1.1.0",
     "grunt-contrib-copy": "1.0.0",
     "grunt-exec": "2.0.0",
-    "nativescript-angular": "~5.1.0",
+    "nativescript-angular": "^5.3.0",
     "reflect-metadata": "^0.1.10",
     "rxjs": "^5.5.0",
-    "tns-core-modules": "3.4.0",
-    "tns-platform-declarations": "3.4.0",
+    "tns-core-modules": "^4.0.1",
+    "tns-platform-declarations": "^4.0.0",
     "tslint": "4.4.2",
-    "typescript": "~2.4.2",
+    "typescript": "^2.6.2",
     "zone.js": "^0.8.14"
   }
 }

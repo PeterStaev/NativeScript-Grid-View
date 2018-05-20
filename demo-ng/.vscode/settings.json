@@ -9,5 +9,7 @@
         "app/**/*.js": true,
         "app/**/*.map": true,
         "app/**/*.css": true
-    }
+    },
+    "git.ignoreLimitWarning": true,
+    "typescript.tsdk": "node_modules/typescript/lib"
 }
