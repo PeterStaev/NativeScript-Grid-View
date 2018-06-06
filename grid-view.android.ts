@@ -1,4 +1,4 @@
-﻿/*! *****************************************************************************
+/*! *****************************************************************************
 Copyright (c) 2018 Tangra Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +29,7 @@ import {
     rowHeightProperty,
 } from "./grid-view-common";
 
-import { GridItemEventData, Orientation } from ".";
+import { GridItemEventData, Orientation, ScrollEventData } from ".";
 
 export * from "./grid-view-common";
 
@@ -247,6 +247,13 @@ function initGridViewScrollListener() {
             if (!owner) {
                 return;
             }
+
+            owner.notify<ScrollEventData>({
+                eventName: GridViewBase.scrollEvent,
+                object: owner,
+                scrollX: dx,
+                scrollY: dy,
+            });
 
             const lastVisibleItemPos = (view.getLayoutManager() as android.support.v7.widget.GridLayoutManager).findLastCompletelyVisibleItemPosition();
             if (owner && owner.items) {
