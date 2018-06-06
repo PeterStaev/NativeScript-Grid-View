@@ -43,6 +43,7 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
     public static itemLoadingEvent = "itemLoading";
     public static itemTapEvent = "itemTap";
     public static loadMoreItemsEvent = "loadMoreItems";
+    public static scrollEvent = "scroll";
     public static knownFunctions = ["itemTemplateSelector", "itemIdGenerator"]; // See component-builder.ts isKnownFunction
 
     public _defaultTemplate: KeyedTemplate = {
