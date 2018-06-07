@@ -31,6 +31,9 @@ Triggered when the user taps on an item in the GridView.
 * **loadMoreItems**  
 Triggered when the generated items reached the end of the items property.
 
+* **scroll**  
+Triggered when the GrdiView is scrolled by the user. from the `args` you can get the new horizonta/vertical offset.
+
 ### Static Properties
 * **itemLoadingEvent** - *String*  
 String value used when hooking to itemLoadingEvent event.
@@ -40,6 +43,9 @@ String value used when hooking to itemTapEvent event.
 
 * **loadMoreItemsEvent** - *String*  
 String value used when hooking to itemTapEvent event.
+
+* **scrollEvent** - *String*  
+String value used when hooking to scroll event.
 
 ### Instance Properties
 * **ios** - *[UICollectionView](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollectionView_class/)*  
