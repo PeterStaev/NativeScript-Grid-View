@@ -371,7 +371,7 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
          const owner = this._owner.get();
          owner.notify<ScrollEventData>({
              object: owner,
-             eventName: "scroll",
+             eventName: GridViewBase.scrollEvent,
              scrollX: owner.horizontalOffset,
              scrollY: owner.verticalOffset
          });
