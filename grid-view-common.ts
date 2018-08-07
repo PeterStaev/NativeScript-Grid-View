@@ -182,6 +182,7 @@ const defaultRowHeight: PercentLength = "auto";
 export const rowHeightProperty = new CoercibleProperty<GridViewBase, PercentLength>({
     name: "rowHeight",
     defaultValue: defaultRowHeight,
+    affectsLayout: true,
     equalityComparer: PercentLength.equals,
     valueConverter: PercentLength.parse,
     coerceValue: (target, value) => {
@@ -199,6 +200,7 @@ const defaultColWidth: PercentLength = "auto";
 export const colWidthProperty = new CoercibleProperty<GridViewBase, PercentLength>({
     name: "colWidth",
     defaultValue: PercentLength.parse("100"),
+    affectsLayout: true,
     equalityComparer: PercentLength.equals,
     valueConverter: PercentLength.parse,
     coerceValue: (target, value) => {
