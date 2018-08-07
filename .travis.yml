@@ -31,7 +31,7 @@ matrix:
     - stage: lint
       language: node_js
       os: linux
-      node_js: "6"
+      node_js: "8"
       script: grunt lint
 
     - stage: build
@@ -40,18 +40,22 @@ matrix:
       env: 
         - Android="26"
       jdk: oraclejdk8
-      before_install: nvm install 6.10.3
+      before_install: nvm install 8.11.3
       script: "grunt ci:build:android"
 
     - stage: build
       os: osx
       env: 
         - iOS="10.3"
-        - Xcode="8.3"
-      osx_image: xcode8.3
+        - Xcode="9.4"
+      osx_image: xcode9.4
       language: node_js 
-      node_js: "6"
+      node_js: "8"
       jdk: oraclejdk8
+      before_install:
+        - pip install --upgrade pip
+        - pip install --user --upgrade matplotlib
+        - pip install six
       script: "grunt ci:build:ios"
 
     - stage: webpack
@@ -61,32 +65,36 @@ matrix:
         - Android="26"
         - Platform="Android"
       jdk: oraclejdk8
-      before_install: nvm install 6.10.3
+      before_install: nvm install 8.11.3
       script: "grunt ci:webpack:android"
     
     - stage: webpack
       os: osx
       env: 
         - iOS="10.3"
-        - Xcode="8.3"
+        - Xcode="9.4"
         - Platform="iOS"
-      osx_image: xcode8.3
+      osx_image: xcode9.4
       language: node_js 
-      node_js: "6"
+      node_js: "8"
       jdk: oraclejdk8
+      before_install:
+        - pip install --upgrade pip
+        - pip install --user --upgrade matplotlib
+        - pip install six
       script: "grunt ci:webpack:ios"
 
     - stage: deploy
       if: branch = release
       language: node_js 
-      node_js: "6"
+      node_js: "8"
       before_deploy:
           - cd bin/dist
       deploy:
         provider: npm
         email: "peter@tangrasoft.com"
         api_key:
-            secure: "aJaRODpz7b7k77WmdOG1tlFp3HZopZq6bzKjMwNtWIGlJbmxBGwv/0c63cHRy2JPxPHFHDQVQ4lcrRzXjyz5lB3dq/VSgFq7ydcBkQnNjwgaBBLfyluYAcyt4/qEHRJqJ5oDuV3ReAE5Vb78OoVOUCevbrgPwm8IoDawXHXwUskqvow/hiooaelvpcntAfA/efLYRJqIzrdaNehfIibESrLPD50PWzLlFk4ctkvtmriCe1WLw7pw9bW/86/tjm3MAf39/HhBx/lYh9SAg1KZRtnga7xfphzybx5ZcI6152Bxt+9ICgXimn2r5IjBp8eW09RkksMars3ZwKf1dZSDcUVLKAwYM3tW1Yn/UdWWWGyoRtq/wMnnVW5TvfuNDEOFOVFP2t0SuOjjwgmQuSc5l1GD65PTDEwLHz01kaCXDEF+ErShZt/VgvkcxwqEozxeCmBfhp2Rlaszh31MSCO9bheM17N5z+v0beujQ5yBYKC+oxIrM2b8cpbbmgfYnXVuTuYnRefNmiODnIhYDK5THBEjbjowpJiy/2Ib4wT6gND8b5foyi6vAD143XXtzFfbDx03iOu/2Ye38741tIZHJfW9k4uUdNS4WGHv86+oY3uQ1GZ2WkaVa/M4V7sdimgqPJnnpG3cOtsFz0zFXEpKJ/gVC6zmtQ5Xwyvl6rSzOyc="
+          secure: "aDwolMad3E8pPs9tI7Wm0zaa2N43KJpCFE+bRknlvBB0YgXxoDAtbts0zModtzaNagJD4lLkLB4mxlC1LASFX533lE7cZ4+vP79tjhvrSnsg6J4obdyPlCDCiLZjarXcOyNyL9yHKNrSQ1XTA1JUJspbTBWG31sTKsx950Bqh2HJW2Zr8ET/Yz/xi/P2LJC1tSXPMN9XzC53COOR5Wr2VIuZxT30tq0p1IC6q+RemwKtwEMx/TojeCDp9kfcPdQBrclRw3Aqs2zmvrs/zrZymIDqR9rMzAYqQMixKwCoURo29B37OUXMzgcgcSWenogUJPqzPRAGvK5IsCAHPqe3A7wrnL5YQfEiapRzFThTLAh4BB5ewOq0OD1YRlrhlqRSNN3Bx99+RGM+uJgtxo4C58WvABxSyuY8uw+Mwl6N/eNUnyWwFt7ulxC/c8yO8OMOB5F8GjcNPcXDa3NC3TrOnRyaQy/3zy+KsYr6SrRBvaqaG6ZuS/D/k/tY1h1RWV02m6ShigzEAi8KIgwC/deIsZwwUc9zqyVqSgwN3uQmnq9W3kdxzMl82VS75E6yAZvz9ezRKzUq/TQWfKHDXpsHAC8K46v5435kHTaOn/8rX/HqzaO4FS5Y+TmRvm/JDP4m6peis5KXHzHv+DgGrF0DNWstUreA2/CbPg0xkgJTYTQ="
         skip_cleanup: true
         on:
           branch: release
