@@ -24,6 +24,7 @@ export class GridView extends View {
     public static itemLoadingEvent: string;
     public static itemTapEvent: string;
     public static loadMoreItemsEvent: string;
+    public static scrollEvent: string;
 
     public items: any[] | ItemsSource;
     public itemTemplate: string | Template;
