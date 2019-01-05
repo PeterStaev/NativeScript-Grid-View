@@ -1,5 +1,5 @@
 /*! *****************************************************************************
-Copyright (c) 2018 Tangra Inc.
+Copyright (c) 2019 Tangra Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -42,38 +42,52 @@ export class GridView extends GridViewBase {
     constructor() {
         super();
 
+        this._map = new Map<GridViewCell, View>();
+    }
+
+    public createNativeView() {
         this._layout = UICollectionViewFlowLayout.alloc().init();
         this._layout.minimumLineSpacing = 0;
         this._layout.minimumInteritemSpacing = 0;
 
-        this.nativeView = UICollectionView.alloc().initWithFrameCollectionViewLayout(CGRectMake(0, 0, 0, 0), this._layout);
-        this.nativeView.backgroundColor = utils.ios.getter(UIColor, UIColor.clearColor);
-        this.nativeView.registerClassForCellWithReuseIdentifier(GridViewCell.class(), this._defaultTemplate.key);
-        this.nativeView.autoresizesSubviews = false;
-        this.nativeView.autoresizingMask = UIViewAutoresizing.None;
+        return UICollectionView.alloc().initWithFrameCollectionViewLayout(CGRectMake(0, 0, 0, 0), this._layout);
+    }
+
+    public initNativeView() {
+        super.initNativeView();
+
+        const nativeView: UICollectionView = this.nativeViewProtected;
+        nativeView.backgroundColor = utils.ios.getter(UIColor, UIColor.clearColor);
+        nativeView.registerClassForCellWithReuseIdentifier(GridViewCell.class(), this._defaultTemplate.key);
+        nativeView.autoresizesSubviews = false;
+        nativeView.autoresizingMask = UIViewAutoresizing.None;
 
         this._dataSource = GridViewDataSource.initWithOwner(new WeakRef(this));
-        this.nativeView.dataSource = this._dataSource;
+        nativeView.dataSource = this._dataSource;
 
         this._delegate = UICollectionViewDelegateImpl.initWithOwner(new WeakRef(this));
-
-        this._map = new Map<GridViewCell, View>();
-
         this._setNativeClipToBounds();
+    }
+
+    public disposeNativeView() {
+        this._layout = null;
+        this._delegate = null;
+        this._dataSource = null;
+        super.disposeNativeView();
     }
 
     public onLoaded() {
         super.onLoaded();
-        this.nativeView.delegate = this._delegate;
+        this.ios.delegate = this._delegate;
     }
 
     public onUnloaded() {
-        this.nativeView.delegate = null;
+        this.ios.delegate = null;
         super.onUnloaded();
     }
 
     get ios(): UICollectionView {
-        return this.nativeView;
+        return this.nativeViewProtected;
     }
 
     get _childrenCount(): number {
@@ -140,7 +154,7 @@ export class GridView extends GridViewBase {
             for (const template of value) {
                 this.ios.registerClassForCellWithReuseIdentifier(GridViewCell.class(), template.key);
             }
-            
+
             this._itemTemplatesInternal = this._itemTemplatesInternal.concat(value);
         }
 
@@ -152,13 +166,17 @@ export class GridView extends GridViewBase {
             callback(view);
         });
     }
-    
+
     public onLayout(left: number, top: number, right: number, bottom: number) {
         super.onLayout(left, top, right, bottom);
 
         const layout = this.ios.collectionViewLayout as UICollectionViewFlowLayout;
         layout.itemSize = CGSizeMake(utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
 
+        this._map.forEach((childView, listViewCell) => {
+            childView.iosOverflowSafeAreaEnabled = false;
+            View.layoutChild(this, childView, 0, 0, this._effectiveColWidth, this._effectiveRowHeight);
+        });
     }
 
     public refresh() {
@@ -170,14 +188,17 @@ export class GridView extends GridViewBase {
 
             return true;
         });
-        
-        this.ios.reloadData();
+
+        if (this.isLoaded) {
+            this.ios.reloadData();
+            this.requestLayout();
+        }
     }
 
     public scrollToIndex(index: number, animated: boolean = true) {
         this.ios.scrollToItemAtIndexPathAtScrollPositionAnimated(
             NSIndexPath.indexPathForItemInSection(index, 0),
-            this.orientation === "vertical" ? UICollectionViewScrollPosition.Top :  UICollectionViewScrollPosition.Left,
+            this.orientation === "vertical" ? UICollectionViewScrollPosition.Top : UICollectionViewScrollPosition.Left,
             animated,
         );
     }
@@ -196,10 +217,24 @@ export class GridView extends GridViewBase {
             this.ios.reloadData();
         }
     }
+    public onMeasure(widthMeasureSpec: number, heightMeasureSpec: number): void {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        this._map.forEach((childView: any, gridViewCell) => {
+            View.measureChild(this, childView, childView._currentWidthMeasureSpec, childView._currentHeightMeasureSpec);
+        });
+    }
 
     public _setNativeClipToBounds() {
-        this.nativeView.clipsToBounds = true;
-    }    
+        this.ios.clipsToBounds = true;
+    }
+
+    public _removeContainer(cell: GridViewCell): void {
+        const view = cell.view;
+
+        view.parent._removeView(view);
+        this._map.delete(cell);
+    }
 
     public _prepareCell(cell: GridViewCell, indexPath: NSIndexPath) {
         try {
@@ -230,9 +265,9 @@ export class GridView extends GridViewBase {
             this._prepareItem(view, indexPath.row);
             this._map.set(cell, view);
 
-            if (view && !view.parent && view.ios) {
-                cell.contentView.addSubview(view.ios);
+            if (view && !view.parent) {
                 this._addView(view);
+                cell.contentView.addSubview(view.ios);
             }
 
             this._layoutCell(view, indexPath);
@@ -251,17 +286,10 @@ export class GridView extends GridViewBase {
         }
     }
 
-    private _removeContainer(cell: GridViewCell): void {
-        const view = cell.view;
-
-        view.parent._removeView(view);
-        this._map.delete(cell);
-    }
-    
     private _setPadding(newPadding: { top?: number, right?: number, bottom?: number, left?: number }) {
         const padding = {
             top: this._layout.sectionInset.top,
-            right: this._layout.sectionInset.right, 
+            right: this._layout.sectionInset.right,
             bottom: this._layout.sectionInset.bottom,
             left: this._layout.sectionInset.left
         };
@@ -284,6 +312,16 @@ class GridViewCell extends UICollectionViewCell {
 
     get view(): View {
         return this.owner ? this.owner.get() : null;
+    }
+
+    public willMoveToSuperview(newSuperview: UIView): void {
+        const parent = (this.view ? this.view.parent : null) as GridView;
+
+        // When inside GidView and there is no newSuperview this cell is 
+        // removed from native visual tree so we remove it from our tree too.
+        if (parent && !newSuperview) {
+            parent._removeContainer(this);
+        }
     }
 }
 
@@ -310,11 +348,12 @@ class GridViewDataSource extends NSObject implements UICollectionViewDataSource 
         const owner = this._owner.get();
         const template = owner._getItemTemplate(indexPath.row);
         const cell: any = collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(template.key, indexPath) || GridViewCell.new();
-        
+
         owner._prepareCell(cell, indexPath);
 
         const cellView: View = cell.view;
-        if (cellView) {
+        if (cellView && (cellView as any).isLayoutRequired) {
+            cellView.iosOverflowSafeAreaEnabled = false;
             View.layoutChild(owner, cellView, 0, 0, owner._effectiveColWidth, owner._effectiveRowHeight);
         }
 
@@ -354,7 +393,7 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
     public collectionViewDidSelectItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath) {
         const cell = collectionView.cellForItemAtIndexPath(indexPath);
         const owner = this._owner.get();
-        
+
         owner.notify<GridItemEventData>({
             eventName: GridViewBase.itemTapEvent,
             object: owner,
@@ -368,12 +407,12 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
     }
 
     public scrollViewDidScroll(collectionView: UICollectionView) {
-         const owner = this._owner.get();
-         owner.notify<ScrollEventData>({
-             object: owner,
-             eventName: GridViewBase.scrollEvent,
-             scrollX: owner.horizontalOffset,
-             scrollY: owner.verticalOffset
-         });
+        const owner = this._owner.get();
+        owner.notify<ScrollEventData>({
+            object: owner,
+            eventName: GridViewBase.scrollEvent,
+            scrollX: owner.horizontalOffset,
+            scrollY: owner.verticalOffset
+        });
     }
 }

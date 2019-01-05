@@ -7,6 +7,4 @@ application.loadAppCss();
 
 require("./vendor-platform");
 
-require("nativescript-grid-view"); // Added for snapshots
-
 require("bundle-entry-points");
