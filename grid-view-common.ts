@@ -16,12 +16,12 @@ limitations under the License.
 
 import { ObservableArray } from "data/observable-array";
 import { parse, parseMultipleTemplates } from "ui/builder";
-import { makeParser, makeValidator } from "ui/content-view";
-import { CSSType, CoercibleProperty, KeyedTemplate, Length, PercentLength, Property, Template, View } from "ui/core/view";
+import { EventData, makeParser, makeValidator } from "ui/content-view";
+import { CSSType, CoercibleProperty, ContainerView, KeyedTemplate, Length, PercentLength, Property, Template, View } from "ui/core/view";
 import { addWeakEventListener, removeWeakEventListener } from "ui/core/weak-event-listener";
 import { Label } from "ui/label";
 import { ItemsSource } from "ui/list-view";
-import { GridView as GridViewDefinition, Orientation } from ".";
+import { GridItemEventData, GridView as GridViewDefinition, Orientation } from ".";
 
 const autoEffectiveRowHeight = 100;
 const autoEffectiveColWidth = 100;
@@ -39,7 +39,7 @@ export module knownMultiTemplates {
 }
 
 @CSSType("GridView")
-export abstract class GridViewBase extends View implements GridViewDefinition {
+export abstract class GridViewBase extends ContainerView implements GridViewDefinition {
     public static itemLoadingEvent = "itemLoading";
     public static itemTapEvent = "itemTap";
     public static loadMoreItemsEvent = "loadMoreItems";
@@ -136,6 +136,22 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
     public _getDataItem(index: number): any {
         return this.isItemsSourceIn ? (this.items as ItemsSource).getItem(index) : this.items[index];
     }
+
+    protected _updateColWidthProperty() {
+        colWidthProperty.coerce(this);
+    }
+
+    protected _updateRowHeightProperty() {
+        rowHeightProperty.coerce(this);
+    }
+}
+
+export interface GridViewBase {
+    on(eventNames: string, callback: (data: EventData) => void, thisArg?: any);
+    on(event: "itemLoading", callback: (args: GridItemEventData) => void, thisArg?: any);
+    // tslint:disable-next-line:unified-signatures
+    on(event: "itemTap", callback: (args: GridItemEventData) => void, thisArg?: any);
+    on(event: "loadMoreItems", callback: (args: EventData) => void, thisArg?: any);
 }
 
 export const itemsProperty = new Property<GridViewBase, any[] | ItemsSource>({

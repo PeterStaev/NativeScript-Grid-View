@@ -313,7 +313,9 @@ function initGridViewAdapter() {
                 eventName: GridViewBase.itemTapEvent,
                 object: gridView,
                 index: this.getAdapterPosition(),
-                view: this.view
+                view: this.view,
+                android: v,
+                ios: undefined,
             });
         }
     
@@ -377,7 +379,9 @@ function initGridViewAdapter() {
                 eventName: GridViewBase.itemLoadingEvent,
                 object: owner,
                 index,
-                view: vh.view
+                view: vh.view,
+                android: vh,
+                ios: undefined,
             });
       
             if (owner.orientation === "horizontal") {

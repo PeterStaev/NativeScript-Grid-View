@@ -214,28 +214,28 @@ export class AppModule { }
 </GridLayout>
 ```
 
-If you want to use multiple item templates, you can do that very similarly to how you do it for the builtin `ListView` control. The only difference is that due to current limitations instead of using the `nsTemplateKey` directive you need to use the `gvTemplateKey` directive that comes from the GridView. (In a future version, once the framework allows it this will be changed and you will be able to use the same directive for the `GridView` as well)
+If you want to use multiple item templates, you can do that very similarly to how you do it for the builtin `ListView` control.
 ```html
 <GridView row="1" [items]="items" colWidth="33%" rowHeight="100" [itemTemplateSelector]="templateSelector">
-    <ng-template gvTemplateKey="Defender" let-item="item" let-odd="odd">
+    <ng-template nsTemplateKey="Defender" let-item="item" let-odd="odd">
         <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="blue" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
         <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
         </StackLayout>
     </ng-template>
 
-    <ng-template gvTemplateKey="Goalkeeper" let-item="item" let-odd="odd">
+    <ng-template nsTemplateKey="Goalkeeper" let-item="item" let-odd="odd">
         <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="black" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
         <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
         </StackLayout>
     </ng-template>
 
-    <ng-template gvTemplateKey="Midfielder" let-item="item" let-odd="odd">
+    <ng-template nsTemplateKey="Midfielder" let-item="item" let-odd="odd">
         <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="yellow" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
         <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
         </StackLayout>
     </ng-template>
 
-    <ng-template gvTemplateKey="Forward" let-item="item" let-odd="odd">
+    <ng-template nsTemplateKey="Forward" let-item="item" let-odd="odd">
         <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="red" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
         <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
         </StackLayout>

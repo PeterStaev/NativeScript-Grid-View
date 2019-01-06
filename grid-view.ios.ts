@@ -67,6 +67,11 @@ export class GridView extends GridViewBase {
 
         this._delegate = UICollectionViewDelegateImpl.initWithOwner(new WeakRef(this));
         this._setNativeClipToBounds();
+
+        // These are needed in cases where the native view is inited after the property has been set
+        // For example happens with Angular usage. 
+        this._updateColWidthProperty();
+        this._updateRowHeightProperty();
     }
 
     public disposeNativeView() {
@@ -245,12 +250,19 @@ export class GridView extends GridViewBase {
                 view = this._getItemTemplate(indexPath.row).createView();
             }
 
-            this.notify<GridItemEventData>({
+            const args: GridItemEventData = {
                 eventName: GridViewBase.itemLoadingEvent,
                 object: this,
                 index: indexPath.row,
-                view
-            });
+                view,
+                ios: cell,
+                android: undefined,
+            };
+            this.notify(args);
+
+            // Get the view as some listener to the itemLoading event could have changed it
+            // For example the angular component does this when it is a single template. 
+            view = args.view;
 
             // If cell is reused it have old content - remove it first.
             if (!cell.view) {
@@ -398,7 +410,9 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
             eventName: GridViewBase.itemTapEvent,
             object: owner,
             index: indexPath.row,
-            view: (cell as GridViewCell).view
+            view: (cell as GridViewCell).view,
+            ios: cell,
+            android: undefined,
         });
 
         cell.highlighted = false;
