@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************** */
 
+import { ContentView } from "ui/content-view";
 import { KeyedTemplate, Length, View } from "ui/core/view";
 import * as utils from "utils/utils";
 
@@ -363,7 +364,11 @@ function initGridViewAdapter() {
         public onCreateViewHolder(parent: android.view.ViewGroup, viewType: number): android.support.v7.widget.RecyclerView.ViewHolder {
             const owner = this.owner.get();
             const template = owner._itemTemplatesInternal[viewType];
-            const view = template.createView();
+            let view = template.createView();
+
+            if (!view) {
+                view = new ContentView();
+            }
 
             owner._addView(view);
 
@@ -374,15 +379,19 @@ function initGridViewAdapter() {
 
         public onBindViewHolder(vh: GridViewCellHolder, index: number) {
             const owner = this.owner.get();
-
-            owner.notify<GridItemEventData>({
+            const args: GridItemEventData = {
                 eventName: GridViewBase.itemLoadingEvent,
                 object: owner,
                 index,
                 view: vh.view,
                 android: vh,
                 ios: undefined,
-            });
+            };
+            owner.notify(args);
+
+            if (vh.view !== args.view && vh.view instanceof ContentView) {
+                vh.view.content = args.view;
+            }
       
             if (owner.orientation === "horizontal") {
                 vh.view.width = utils.layout.toDeviceIndependentPixels(owner._effectiveColWidth);
