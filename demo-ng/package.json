@@ -1,10 +1,10 @@
 {
   "nativescript": {
     "id": "com.tangrainc.nggridviewsample",
-    "tns-android": {
+    "tns-ios": {
       "version": "5.1.0"
     },
-    "tns-ios": {
+    "tns-android": {
       "version": "5.1.0"
     }
   },
@@ -18,16 +18,16 @@
     "build-ios-bundle": "npm run ns-bundle --ios --build-app"
   },
   "dependencies": {
-    "@angular/animations": "~7.1.0",
-    "@angular/common": "~7.1.0",
-    "@angular/compiler": "~7.1.0",
-    "@angular/core": "~7.1.0",
-    "@angular/forms": "~7.1.0",
-    "@angular/http": "~7.1.0",
-    "@angular/platform-browser": "~7.1.0",
-    "@angular/platform-browser-dynamic": "~7.1.0",
-    "@angular/router": "~7.1.0",
-    "nativescript-angular": "^7.1.0",
+    "@angular/animations": "~7.2.0",
+    "@angular/common": "~7.2.0",
+    "@angular/compiler": "~7.2.0",
+    "@angular/core": "~7.2.0",
+    "@angular/forms": "~7.2.0",
+    "@angular/http": "~7.2.0",
+    "@angular/platform-browser": "~7.2.0",
+    "@angular/platform-browser-dynamic": "~7.2.0",
+    "@angular/router": "~7.2.0",
+    "nativescript-angular": "^7.2.3",
     "nativescript-grid-view": "file:../bin/dist",
     "nativescript-theme-core": "^1.0.4",
     "reflect-metadata": "~0.1.8",

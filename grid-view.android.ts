@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************** */
 
-import { ContentView } from "ui/content-view";
 import { KeyedTemplate, Length, View } from "ui/core/view";
+import { GridLayout } from "ui/layouts/grid-layout";
 import * as utils from "utils/utils";
 
 import {
@@ -24,7 +24,7 @@ import {
     itemTemplatesProperty,
     orientationProperty,
     paddingBottomProperty,
-    paddingLeftProperty,   
+    paddingLeftProperty,
     paddingRightProperty,
     paddingTopProperty,
     rowHeightProperty,
@@ -33,6 +33,9 @@ import {
 import { GridItemEventData, Orientation, ScrollEventData } from ".";
 
 export * from "./grid-view-common";
+
+// Used to designate a view as as a DUMMY created view (to cope with angular view generation)
+const DUMMY = "DUMMY";
 
 export class GridView extends GridViewBase {
     public nativeView: android.support.v7.widget.RecyclerView;
@@ -83,7 +86,7 @@ export class GridView extends GridViewBase {
         });
         this._realizedItems.clear();
 
-        const nativeView = this.nativeView as any;        
+        const nativeView = this.nativeView as any;
         this.nativeView.removeOnScrollListener(nativeView.scrollListener);
 
         nativeView.scrollListener = null;
@@ -180,10 +183,10 @@ export class GridView extends GridViewBase {
         let spanCount: number;
 
         if (this.orientation === "horizontal") {
-          spanCount = Math.max(Math.floor(this._innerHeight / this._effectiveRowHeight), 1) || 1;
+            spanCount = Math.max(Math.floor(this._innerHeight / this._effectiveRowHeight), 1) || 1;
         }
         else {
-          spanCount = Math.max(Math.floor(this._innerWidth / this._effectiveColWidth), 1) || 1;
+            spanCount = Math.max(Math.floor(this._innerWidth / this._effectiveColWidth), 1) || 1;
         }
 
         layoutManager.setSpanCount(spanCount);
@@ -199,12 +202,12 @@ export class GridView extends GridViewBase {
             this.nativeView.scrollToPosition(index);
         }
     }
-    
+
     private _setPadding(newPadding: { top?: number, right?: number, bottom?: number, left?: number }) {
         const nativeView: android.view.View = this.nativeView as any;
         const padding = {
             top: nativeView.getPaddingTop(),
-            right: nativeView.getPaddingRight(), 
+            right: nativeView.getPaddingRight(),
             bottom: nativeView.getPaddingBottom(),
             left: nativeView.getPaddingLeft()
         };
@@ -224,7 +227,7 @@ export class GridView extends GridViewBase {
 }
 
 // Snapshot friendly GridViewScrollListener
-interface GridViewScrollListener  extends android.support.v7.widget.RecyclerView.OnScrollListener {
+interface GridViewScrollListener extends android.support.v7.widget.RecyclerView.OnScrollListener {
     // tslint:disable-next-line:no-misused-new
     new(owner: WeakRef<GridView>): GridViewScrollListener;
 }
@@ -266,7 +269,7 @@ function initGridViewScrollListener() {
                     });
                 }
             }
-        
+
         }
 
         public onScrollStateChanged(view: android.support.v7.widget.RecyclerView, newState: number) {
@@ -275,7 +278,7 @@ function initGridViewScrollListener() {
     }
 
     GridViewScrollListener = GridViewScrollListenerImpl as any;
-}    
+}
 // END snapshot friendly GridViewScrollListener
 
 // Snapshot friendly GridViewAdapter
@@ -319,13 +322,13 @@ function initGridViewAdapter() {
                 ios: undefined,
             });
         }
-    
+
     }
 
     class GridViewAdapterImpl extends android.support.v7.widget.RecyclerView.Adapter {
         constructor(private owner: WeakRef<GridView>) {
             super();
-        
+
             return global.__native(this);
         }
 
@@ -357,7 +360,7 @@ function initGridViewAdapter() {
             const owner = this.owner.get();
             const template = owner._getItemTemplate(index);
             const itemViewType = owner._itemTemplatesInternal.indexOf(template);
-            
+
             return itemViewType;
         }
 
@@ -367,7 +370,8 @@ function initGridViewAdapter() {
             let view = template.createView();
 
             if (!view) {
-                view = new ContentView();
+                view = new GridLayout();
+                view[DUMMY] = true;
             }
 
             owner._addView(view);
@@ -383,29 +387,33 @@ function initGridViewAdapter() {
                 eventName: GridViewBase.itemLoadingEvent,
                 object: owner,
                 index,
-                view: vh.view,
+                // This is needed as the angular view generation with a single template is done in the event handler
+                // for this event (????). That;s why if we created above an empty StackLayout, we must send `null`
+                // sp that the angular handler initializes the correct view. 
+                view: vh.view[DUMMY] ? null : vh.view,
                 android: vh,
                 ios: undefined,
             };
             owner.notify(args);
 
-            if (vh.view !== args.view && vh.view instanceof ContentView) {
-                vh.view.content = args.view;
+            if (vh.view[DUMMY]) {
+                (vh.view as GridLayout).addChild(args.view);
+                vh.view[DUMMY] = undefined;
             }
-      
+
             if (owner.orientation === "horizontal") {
                 vh.view.width = utils.layout.toDeviceIndependentPixels(owner._effectiveColWidth);
             }
             else {
                 vh.view.height = utils.layout.toDeviceIndependentPixels(owner._effectiveRowHeight);
             }
-        
+
             owner._prepareItem(vh.view, index);
         }
     }
 
     GridViewAdapter = GridViewAdapterImpl as any;
-}    
+}
 // END Snapshot friendly GridViewAdapter
 
 // Snapshot friendly GridViewRecyclerView
@@ -435,9 +443,9 @@ function initGridViewRecyclerView() {
             }
             super.onLayout(changed, l, t, r, b);
         }
-    
+
     }
 
     GridViewRecyclerView = GridViewRecyclerViewImpl as any;
-}    
+}
 // END Snapshot friendly GridViewRecyclerView
