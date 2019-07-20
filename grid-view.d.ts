@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************** */
 
-import { KeyedTemplate, PercentLength, Template, ContainerView } from "ui/core/view";
-import { ItemsSource, ItemEventData, TemplatedItemsView } from "ui/list-view";
-import { EventData } from "data/observable";
+import { KeyedTemplate, PercentLength, Template, ContainerView } from "tns-core-modules/ui/core/view";
+import { ItemsSource, ItemEventData, TemplatedItemsView } from "tns-core-modules/ui/list-view";
+import { EventData } from "tns-core-modules/data/observable";
 
 export type Orientation = "horizontal" | "vertical"
 

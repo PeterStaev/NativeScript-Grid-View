@@ -14,19 +14,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************** */
 
-import { ObservableArray } from "data/observable-array";
-import { parse, parseMultipleTemplates } from "ui/builder";
-import { EventData, makeParser, makeValidator } from "ui/content-view";
-import { CSSType, CoercibleProperty, ContainerView, KeyedTemplate, Length, PercentLength, Property, Template, View } from "ui/core/view";
-import { addWeakEventListener, removeWeakEventListener } from "ui/core/weak-event-listener";
-import { Label } from "ui/label";
-import { ItemsSource } from "ui/list-view";
+import { ObservableArray } from "tns-core-modules/data/observable-array";
+import { parse, parseMultipleTemplates } from "tns-core-modules/ui/builder";
+import { EventData, makeParser, makeValidator } from "tns-core-modules/ui/content-view";
+import { CSSType, CoercibleProperty, ContainerView, KeyedTemplate, Length, PercentLength, Property, Template, View } from "tns-core-modules/ui/core/view";
+import { addWeakEventListener, removeWeakEventListener } from "tns-core-modules/ui/core/weak-event-listener";
+import { Label } from "tns-core-modules/ui/label";
+import { ItemsSource } from "tns-core-modules/ui/list-view";
 import { GridItemEventData, GridView as GridViewDefinition, Orientation } from ".";
 
 const autoEffectiveRowHeight = 100;
 const autoEffectiveColWidth = 100;
 
-export * from "ui/core/view";
+export * from "tns-core-modules/ui/core/view";
 
 // tslint:disable-next-line
 export module knownTemplates {

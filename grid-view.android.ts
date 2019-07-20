@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************** */
 
-import { KeyedTemplate, Length, View } from "ui/core/view";
-import { GridLayout } from "ui/layouts/grid-layout";
-import * as utils from "utils/utils";
+import { KeyedTemplate, Length, View } from "tns-core-modules/ui/core/view";
+import { GridLayout } from "tns-core-modules/ui/layouts/grid-layout";
+import * as utils from "tns-core-modules/utils/utils";
 
 import {
     GridViewBase,

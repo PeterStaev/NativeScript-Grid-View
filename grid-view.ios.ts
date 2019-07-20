@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************** */
 
-import { EventData, Observable } from "data/observable";
-import { KeyedTemplate, Length, View } from "ui/core/view";
-import * as utils from "utils/utils";
+import { EventData, Observable } from "tns-core-modules/data/observable";
+import { KeyedTemplate, Length, View } from "tns-core-modules/ui/core/view";
+import * as utils from "tns-core-modules/utils/utils";
 
 import {
     GridViewBase,
