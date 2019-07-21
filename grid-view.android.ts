@@ -53,7 +53,7 @@ export class GridView extends GridViewBase {
 
         const orientation = this._getLayoutManagarOrientation();
 
-        const layoutManager = new android.support.v7.widget.GridLayoutManager(this._context, 1);
+        const layoutManager = new androidx.recyclerview.widget.GridLayoutManager(this._context, 1);
         recyclerView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(orientation);
         (recyclerView as any).layoutManager = layoutManager;
@@ -133,20 +133,20 @@ export class GridView extends GridViewBase {
     }
 
     public [orientationProperty.getDefault](): Orientation {
-        const layoutManager = this.nativeView.getLayoutManager() as android.support.v7.widget.GridLayoutManager;
-        if (layoutManager.getOrientation() === android.support.v7.widget.LinearLayoutManager.HORIZONTAL) {
+        const layoutManager = this.nativeView.getLayoutManager() as androidx.recyclerview.widget.GridLayoutManager;
+        if (layoutManager.getOrientation() === androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL) {
             return "horizontal";
         }
 
         return "vertical";
     }
     public [orientationProperty.setNative](value: Orientation) {
-        const layoutManager = this.nativeView.getLayoutManager() as android.support.v7.widget.GridLayoutManager;
+        const layoutManager = this.nativeView.getLayoutManager() as androidx.recyclerview.widget.GridLayoutManager;
         if (value === "horizontal") {
-            layoutManager.setOrientation(android.support.v7.widget.LinearLayoutManager.HORIZONTAL);
+            layoutManager.setOrientation(androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL);
         }
         else {
-            layoutManager.setOrientation(android.support.v7.widget.LinearLayoutManager.VERTICAL);
+            layoutManager.setOrientation(androidx.recyclerview.widget.LinearLayoutManager.VERTICAL);
         }
     }
 
@@ -179,7 +179,7 @@ export class GridView extends GridViewBase {
             return;
         }
 
-        const layoutManager = this.nativeView.getLayoutManager() as android.support.v7.widget.GridLayoutManager;
+        const layoutManager = this.nativeView.getLayoutManager() as androidx.recyclerview.widget.GridLayoutManager;
         let spanCount: number;
 
         if (this.orientation === "horizontal") {
@@ -217,9 +217,9 @@ export class GridView extends GridViewBase {
     }
 
     private _getLayoutManagarOrientation() {
-        let orientation = android.support.v7.widget.LinearLayoutManager.VERTICAL;
+        let orientation = androidx.recyclerview.widget.LinearLayoutManager.VERTICAL;
         if (this.orientation === "horizontal") {
-            orientation = android.support.v7.widget.LinearLayoutManager.HORIZONTAL;
+            orientation = androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL;
         }
 
         return orientation;
@@ -227,7 +227,7 @@ export class GridView extends GridViewBase {
 }
 
 // Snapshot friendly GridViewScrollListener
-interface GridViewScrollListener extends android.support.v7.widget.RecyclerView.OnScrollListener {
+interface GridViewScrollListener extends androidx.recyclerview.widget.RecyclerView.OnScrollListener {
     // tslint:disable-next-line:no-misused-new
     new(owner: WeakRef<GridView>): GridViewScrollListener;
 }
@@ -239,7 +239,7 @@ function initGridViewScrollListener() {
         return;
     }
 
-    class GridViewScrollListenerImpl extends android.support.v7.widget.RecyclerView.OnScrollListener {
+    class GridViewScrollListenerImpl extends androidx.recyclerview.widget.RecyclerView.OnScrollListener {
         constructor(private owner: WeakRef<GridView>) {
             super();
 
@@ -259,7 +259,7 @@ function initGridViewScrollListener() {
                 scrollY: dy,
             });
 
-            const lastVisibleItemPos = (view.getLayoutManager() as android.support.v7.widget.GridLayoutManager).findLastCompletelyVisibleItemPosition();
+            const lastVisibleItemPos = (view.getLayoutManager() as androidx.recyclerview.widget.GridLayoutManager).findLastCompletelyVisibleItemPosition();
             if (owner && owner.items) {
                 const itemCount = owner.items.length - 1;
                 if (lastVisibleItemPos === itemCount) {
