@@ -1,4 +1,5 @@
-﻿# NativeScript GridView widget
+**This repo only supports NativeScript pre-6.0. The latest version of the plugin supporting NS 6+ is availble as part of [ProPlugins](https://proplugins.org).**
+# NativeScript GridView widget
 [![Build Status](https://travis-ci.org/PeterStaev/NativeScript-Grid-View.svg?branch=master)](https://travis-ci.org/PeterStaev/NativeScript-Grid-View)
 [![npm downloads](https://img.shields.io/npm/dm/nativescript-grid-view.svg)](https://www.npmjs.com/package/nativescript-grid-view)
 [![npm downloads](https://img.shields.io/npm/dt/nativescript-grid-view.svg)](https://www.npmjs.com/package/nativescript-grid-view)
