@@ -1,4 +1,4 @@
 dependencies {
-    def supportVer = project.hasProperty("supportVersion") ? supportVersion : "1.2.0-alpha01";
-    compile "androidx.recyclerview:recyclerview:$supportVer"
+    def supportVer = project.hasProperty("supportVersion") ? supportVersion : "26.0.0-alpha1";
+    compile "com.android.support:recyclerview-v7:$supportVer"
 }
